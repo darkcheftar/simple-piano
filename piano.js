@@ -1,19 +1,35 @@
+window.addEventListener('paste',(e)=>{
+    console.log(e)
+    if(e?.clipboardData?.files.length > 0){
+        if(e.clipboardData.files[0].type.startsWith('image/')){
+            setPreviewImage(e.clipboardData.files[0]);
+        }
+    }
+})
+function setPreviewImage(file){
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload=()=>{
+        document.querySelector('img').src = fileReader.result;
+    }
+}
+
 let ctx = new AudioContext();
 let frequencies = [
-    261.626, 293.665,
-    329.628, 349.228,
-    391.995,     440,
-    493.883, 523.251
-  ]
-let f = {
-    "a": 261.626,
-    "s": 293.665,
-    "d": 329.628,
-    "f": 349.228,
-    "j": 391.995,
-    "k": 440,
-    "l": 493.883,
-    ";": 523.251
+    130.813, 146.8325,  164.814,
+    174.614, 195.9975,      220,
+   246.9415, 261.6255,  261.626,
+    293.665,  329.628,  349.228,
+    391.995,      440,  493.883,
+    523.251,  523.252,   587.33,
+    659.256,  698.456,   783.99,
+        880,  987.766, 1046.502
+ ]
+
+let keys = "qweruiopasdfjkl;zxcvnm,."
+let f = {};
+for(i of [...Array(keys.length).keys()]){
+    f[keys[i]] = frequencies[i]
 }
 
 function Note(frequency){
